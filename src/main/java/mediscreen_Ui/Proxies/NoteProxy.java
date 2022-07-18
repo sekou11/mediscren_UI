@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import mediscreen_Ui.Models.Note;
-@FeignClient(name = "mspatient", url = "${ms_note.url}:8702")
+@FeignClient(name = "msnote")
 public interface NoteProxy {
 	@GetMapping("/note/list")
     List<Note> getAll();

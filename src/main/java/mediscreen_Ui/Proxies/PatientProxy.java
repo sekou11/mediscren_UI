@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import mediscreen_Ui.Models.Patient;
 
-@FeignClient(name = "mspatient", url = "${ms_patient.url}:8701")
+@FeignClient(name = "mspatient")
 public interface PatientProxy {
 	 @GetMapping("/patient/list")
-	    List<Patient> getPatients();
+	    List<Patient> getAllPatients();
 
 	    @GetMapping("/patient/{id}")
 	    Patient getPatient(@PathVariable int id);
