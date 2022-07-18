@@ -12,7 +12,7 @@ import mediscreen_Ui.Services.PatientService;
 @Service
 public class PatientServiceImpl implements PatientService {
 	@Autowired
-	private PatientProxy patientProxy;
+	PatientProxy patientProxy;
 
 	@Override
 	public List<Patient> getPatients() {
