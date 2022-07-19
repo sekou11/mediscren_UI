@@ -8,7 +8,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import mediscreen_Ui.Models.Note;
@@ -27,7 +26,7 @@ public interface NoteProxy {
 	@PostMapping("/note/add")
 	Note saveNote(@Valid @RequestBody Note note);
 
-	@PutMapping("/note/update")
+	@PostMapping("/note/update")
 	Note updateNote(@Valid @RequestBody Note noteToUpdate);
 
 	@GetMapping("/note/delete/{id}")
