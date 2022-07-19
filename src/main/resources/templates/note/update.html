@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Update Patient</title>
+       <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" />
+    </head>
+    <body>
+        <div th:replace="menu"></div>
+        <div class="container">
+
+            <div class="row">
+                <h2>Update Note</h2>
+            </div>
+        </div>
+        <div class="row">
+            <form class="container" th:action="@{/note/update/{id}/{patientId} (id=${currentNote.id}, patientId=${currentNote.patientId})}" th:object="${currentNote}" method="POST">
+                <div class="form-group row mb-3">
+                    <label for="note" class="col-sm-2 col-form-label">Note : </label>
+                    <textarea class="form-control" id="note" rows="3" th:field="*{note}" required></textarea>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Update note</button>
+                    <a class="btn btn-danger" href="#" th:href="@{/patient/list}" role="button">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </body>
+</html> 

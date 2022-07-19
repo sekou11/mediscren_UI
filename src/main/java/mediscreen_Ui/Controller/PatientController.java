@@ -13,8 +13,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import mediscreen_Ui.Models.Note;
 import mediscreen_Ui.Models.Patient;
+import mediscreen_Ui.Services.NoteService;
 import mediscreen_Ui.Services.Impl.PatientServiceImpl;
 
 @Controller
@@ -22,6 +26,9 @@ public class PatientController {
 	 private static final Logger logger = LogManager.getLogger(PatientController.class);
 	@Autowired
 	private PatientServiceImpl patientServiceImpl;
+	
+	 @Autowired
+	    private NoteService noteProxy;
 	
 	 @GetMapping("/patient/list")
     public String getAllPatients(Model model) {
@@ -40,8 +47,8 @@ public class PatientController {
 	        model.addAttribute("patient", patient);
 	        
 
-//	        List<Note> notes = noteProxy.getNotesByPatient(id);
-//	        model.addAttribute("notes", notes);
+        List<Note> notes = noteProxy.getNotesByPatient(id);
+	        model.addAttribute("notes", notes);
 
 	        return "patient/fichePatient";
 	    }
@@ -51,7 +58,10 @@ public class PatientController {
 	        return "patient/add";
 	    }
 	    
-	    @PostMapping("/patient/add")
+	    
+	    @RequestMapping(
+	    	    value = "/patient/add",
+	    	    method = RequestMethod.POST)
 	    public String submitAddPatientForm(@Valid Patient patient, BindingResult result, Model model) {
 	        if (!result.hasErrors()) {
 	        	patientServiceImpl.addPatient(patient);
