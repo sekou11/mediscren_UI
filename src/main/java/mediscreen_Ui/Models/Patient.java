@@ -25,9 +25,13 @@ public class Patient {
     @NotBlank(message = "LastName should not be blank")
     private String lastName;
 
-    @NotNull(message = "date of birth is mandatory")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate birthdate;
+   
+    
+    
+    @NotNull(message = "birthdate should not be blank")
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate birthdate;
 
     @NotBlank(message = "Sex should not be blank")
     private String sex;

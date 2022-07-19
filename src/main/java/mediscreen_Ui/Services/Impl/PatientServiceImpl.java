@@ -15,7 +15,7 @@ public class PatientServiceImpl implements PatientService {
 	PatientProxy patientProxy;
 
 	@Override
-	public List<Patient> getPatients() {
+	public List<Patient> getAllPatients() {
 
 		return patientProxy.getAllPatients();
 	}

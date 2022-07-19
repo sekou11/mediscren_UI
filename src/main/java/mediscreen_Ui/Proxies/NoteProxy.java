@@ -11,24 +11,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import mediscreen_Ui.Models.Note;
-@FeignClient(name = "msnote")
+
+@FeignClient(name = "msnote", url = "localhost:87022")
 public interface NoteProxy {
 	@GetMapping("/note/list")
-    List<Note> getAll();
+	List<Note> getAll();
 
-    @GetMapping("/note/patient/{id}")
-    List<Note> getNotesForPatientId(@PathVariable int id);
+	@GetMapping("/note/patient/{id}")
+	List<Note> getNotesForPatientId(@PathVariable int id);
 
-    @GetMapping("/note/{id}")
-    Note findNote(@PathVariable String id);
+	@GetMapping("/note/{id}")
+	Note findNote(@PathVariable String id);
 
-    @PostMapping("/note/add")
-    Note saveNote(@Valid @RequestBody Note note);
+	@PostMapping("/note/add")
+	Note saveNote(@Valid @RequestBody Note note);
 
-    @PostMapping("/note/update")
-    Note updateNote(@Valid @RequestBody Note noteToUpdate);
+	@PostMapping("/note/update")
+	Note updateNote(@Valid @RequestBody Note noteToUpdate);
 
-    @GetMapping("/note/delete/{id}")
-    void deleteNote(@PathVariable String id);
+	@GetMapping("/note/delete/{id}")
+	void deleteNote(@PathVariable String id);
 
 }

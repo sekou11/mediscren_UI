@@ -8,16 +8,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import feign.Headers;
+import feign.RequestLine;
 import mediscreen_Ui.Models.Patient;
 
-@FeignClient(name = "mspatient")
+@FeignClient(name = "mspatient",url="localhost:8701")
 public interface PatientProxy {
 	 @GetMapping("/patient/list")
 	    List<Patient> getAllPatients();
 
 	    @GetMapping("/patient/{id}")
 	    Patient getPatient(@PathVariable int id);
-
+	    
+	    @RequestLine("POST")
+	    @Headers("Content-Type: application/json")
 	    @PostMapping(value = "/patient/add", consumes = "application/json")
 	    Patient addPatient(@RequestBody Patient patient);
 

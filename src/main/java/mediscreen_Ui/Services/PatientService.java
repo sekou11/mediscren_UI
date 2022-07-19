@@ -5,7 +5,7 @@ import java.util.List;
 import mediscreen_Ui.Models.Patient;
 
 public interface PatientService {
-	public List<Patient> getPatients();
+	public List<Patient> getAllPatients();
 
 	public Patient getPatient(int id);
 

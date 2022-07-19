@@ -55,7 +55,7 @@ class PatientServiceImplTest {
 	        final List<Patient> patients = Collections.singletonList(patient);
 	        when(patientProxyServiceImplUnderTest.patientProxy.getAllPatients()).thenReturn(patients);
 
-	        final List<Patient> result = patientProxyServiceImplUnderTest.getPatients();
+	        final List<Patient> result = patientProxyServiceImplUnderTest.getAllPatients();
 
 	        verify(patientProxyServiceImplUnderTest.patientProxy).getAllPatients();
 
@@ -65,7 +65,7 @@ class PatientServiceImplTest {
 	    void testGetPatients_PatientProxyReturnsNoItems() {
 	        when(patientProxyServiceImplUnderTest.patientProxy.getAllPatients()).thenReturn(Collections.emptyList());
 
-	        final List<Patient> result = patientProxyServiceImplUnderTest.getPatients();
+	        final List<Patient> result = patientProxyServiceImplUnderTest.getAllPatients();
 
 	        assertThat(result).isEqualTo(Collections.emptyList());
 	    }
