@@ -18,82 +18,82 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import mediscreen_Ui.Models.Note;
 import mediscreen_Ui.Models.Patient;
+import mediscreen_Ui.Proxies.ReportProxy;
 import mediscreen_Ui.Services.NoteService;
+import mediscreen_Ui.Services.ReportService;
+import mediscreen_Ui.Services.ReportServiceImpl;
 import mediscreen_Ui.Services.Impl.PatientServiceImpl;
 
 @Controller
 public class PatientController {
-	 private static final Logger logger = LogManager.getLogger(PatientController.class);
+	private static final Logger logger = LogManager.getLogger(PatientController.class);
 	@Autowired
 	private PatientServiceImpl patientServiceImpl;
-	
-	 @Autowired
-	    private NoteService noteProxy;
-	
-	 @GetMapping("/patient/list")
-    public String getAllPatients(Model model) {
-		 logger.info("la liste des patients");
-    	List<Patient>patients = patientServiceImpl.getAllPatients();
-    	model.addAttribute("patients", patients);
-    	return "patient/list";
-    }
-	 
-	 
-	    @GetMapping("/patient/fiche/{id}")
-	    public String getPatient(@PathVariable Integer id, Model model) {
-	        Patient patient = patientServiceImpl.getPatient(id);
-	       
+	@Autowired
+	private ReportServiceImpl reportProxy;
 
-	        model.addAttribute("patient", patient);
-	        
+	@Autowired
+	private NoteService noteProxy;
 
-        List<Note> notes = noteProxy.getNotesByPatient(id);
-	        model.addAttribute("notes", notes);
+	@GetMapping("/patient/list")
+	public String getAllPatients(Model model) {
+		logger.info("la liste des patients");
+		List<Patient> patients = patientServiceImpl.getAllPatients();
+		model.addAttribute("patients", patients);
+		return "patient/list";
+	}
 
-	        return "patient/fichePatient";
-	    }
-	    
-	    @GetMapping("/patient/add")
-	    public String showAddPatientForm(Patient patient) {
-	        return "patient/add";
-	    }
-	    
-	    
-	    @RequestMapping(
-	    	    value = "/patient/add",
-	    	    method = RequestMethod.POST)
-	    public String submitAddPatientForm(@Valid Patient patient, BindingResult result, Model model) {
-	        if (!result.hasErrors()) {
-	        	patientServiceImpl.addPatient(patient);
-	            model.addAttribute("patients", patientServiceImpl.getAllPatients());
-	            logger.info("POST /patient/validate : OK");
-	            return "redirect:/patient/list";
-	        }
-	        logger.info("/patient/validate : KO");
-	        return "patient/add";
-	    }  
-	    
-	    @GetMapping("/patient/update/{id}")
-	    public String updatePatientForm(@PathVariable(value = "id") int id, Model model) {
-	        model.addAttribute("patient", patientServiceImpl.getPatient(id));
-	        return "patient/update";
-	    }
-	    
-	    @PostMapping("/patient/update/{id}")
-	    public String updatePatient(@Valid Patient patient, @PathVariable("id") int id, BindingResult result, Model model) {
-	        if (!result.hasErrors()) {
-	        	patientServiceImpl.updatePatient(id, patient);
-	            model.addAttribute("patients", patientServiceImpl.getAllPatients());
-	            logger.info("POST /patient/update : OK");
-	            return "redirect:/patient/fiche/{id}";
-	        }
-	        logger.info("/patient/update : KO");
-	        return "patient/update";
-	    }
+	@GetMapping("/patient/fiche/{id}")
+	public String getPatient(@PathVariable Integer id, Model model) {
+		Patient patient = patientServiceImpl.getPatient(id);
+		String risk = reportProxy.getReportByPatient(id);
+		List<Note> notes = noteProxy.getNotesByPatient(id);
 
-	    @GetMapping("/patient/delete/{id}")
-	    public String deletePatient(@PathVariable int id) {
-	    	patientServiceImpl.deletePatient(id);
-	        return "redirect:/patient/list";
-	    }
+		model.addAttribute("patient", patient);
+		model.addAttribute("risk", risk);
+		model.addAttribute("notes", notes);
+
+		return "patient/fichePatient";
+	}
+
+	@GetMapping("/patient/add")
+	public String showAddPatientForm(Patient patient) {
+		return "patient/add";
+	}
+
+	@RequestMapping(value = "/patient/add", method = RequestMethod.POST)
+	public String submitAddPatientForm(@Valid Patient patient, BindingResult result, Model model) {
+		if (!result.hasErrors()) {
+			patientServiceImpl.addPatient(patient);
+			model.addAttribute("patients", patientServiceImpl.getAllPatients());
+			logger.info("POST /patient/validate : OK");
+			return "redirect:/patient/list";
+		}
+		logger.info("/patient/validate : KO");
+		return "patient/add";
+	}
+
+	@GetMapping("/patient/update/{id}")
+	public String updatePatientForm(@PathVariable(value = "id") int id, Model model) {
+		model.addAttribute("patient", patientServiceImpl.getPatient(id));
+		return "patient/update";
+	}
+
+	@PostMapping("/patient/update/{id}")
+	public String updatePatient(@Valid Patient patient, @PathVariable("id") int id, BindingResult result, Model model) {
+		if (!result.hasErrors()) {
+			patientServiceImpl.updatePatient(id, patient);
+			model.addAttribute("patients", patientServiceImpl.getAllPatients());
+			logger.info("POST /patient/update : OK");
+			return "redirect:/patient/fiche/{id}";
+		}
+		logger.info("/patient/update : KO");
+		return "patient/update";
+	}
+
+	@GetMapping("/patient/delete/{id}")
+	public String deletePatient(@PathVariable int id) {
+		patientServiceImpl.deletePatient(id);
+		return "redirect:/patient/list";
+	}
 }
