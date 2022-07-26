@@ -1,0 +1,37 @@
+version: "3"
+services:
+
+  mspatient:
+    image: ms_patient
+    ports:
+      - "8701:8701"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+
+  msnote:
+    image: ms_note
+    ports:
+      - "8702:8702"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+
+  msreport:
+    image: ms_report
+    ports:
+      - "9093:9093"
+    depends_on:
+      - mspatient
+      - msnote
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+
+  msui:
+    image: ms_ui
+    ports:
+      - "8703:8703"
+    depends_on:
+      - mspatient
+      - msnote
+      - msreport
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
