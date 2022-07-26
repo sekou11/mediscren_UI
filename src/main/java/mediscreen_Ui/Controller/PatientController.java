@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import mediscreen_Ui.Models.Note;
 import mediscreen_Ui.Models.Patient;
+import mediscreen_Ui.Proxies.ReportProxy;
 import mediscreen_Ui.Services.NoteService;
 import mediscreen_Ui.Services.Impl.PatientServiceImpl;
 
@@ -29,6 +30,9 @@ public class PatientController {
 	
 	 @Autowired
 	    private NoteService noteProxy;
+	 
+	 @Autowired
+	    private ReportProxy reportProxy;
 	
 	 @GetMapping("/patient/list")
     public String getAllPatients(Model model) {
@@ -42,9 +46,11 @@ public class PatientController {
 	    @GetMapping("/patient/fiche/{id}")
 	    public String getPatient(@PathVariable Integer id, Model model) {
 	        Patient patient = patientServiceImpl.getPatient(id);
+	        String risk = reportProxy.getReportByPatient(id);
 	       
 
 	        model.addAttribute("patient", patient);
+	        model.addAttribute("risk", risk);
 	        
 
         List<Note> notes = noteProxy.getNotesByPatient(id);

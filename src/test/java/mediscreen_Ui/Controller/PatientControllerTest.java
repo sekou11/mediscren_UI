@@ -1,5 +1,16 @@
 package mediscreen_Ui.Controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,19 +25,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import mediscreen_Ui.Models.Note;
 import mediscreen_Ui.Models.Patient;
+import mediscreen_Ui.Proxies.ReportProxy;
 import mediscreen_Ui.Services.Impl.NoteServiceImpl;
 import mediscreen_Ui.Services.Impl.PatientServiceImpl;
-
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(PatientController.class)
@@ -39,6 +40,8 @@ class PatientControllerTest {
     private PatientServiceImpl mockPatientProxy;
     @MockBean
     private NoteServiceImpl mockNoteProxy;
+    @MockBean
+    private ReportProxy mockReportProxy;
     
 
     final Patient patient = new Patient();
@@ -95,7 +98,7 @@ class PatientControllerTest {
     @Test
     void testGetPatient() throws Exception {
         when(mockPatientProxy.getPatient(0)).thenReturn(patient);
-
+        when(mockReportProxy.getReportByPatient(0)).thenReturn("result");
         
 
         final List<Note> notes = Collections.singletonList(note);
